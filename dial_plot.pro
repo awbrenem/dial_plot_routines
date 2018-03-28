@@ -100,8 +100,11 @@ pro dial_plot,$
   vals_plot = transpose(bs_vals[*,*])
 
 
+;  polar_contour,vals_plot,grid_theta_center,grid_lshell_center,/cell_fill,nlevels=20,/isotropic,$
+;                xrange=[-7,7],yrange=[-7,7],/nodata,title=title,$
+;                ystyle=1,xstyle=1
   polar_contour,vals_plot,grid_theta_center,grid_lshell_center,/cell_fill,nlevels=20,/isotropic,$
-                xrange=[-7,7],yrange=[-7,7],/nodata,title=title,$
+                xrange=[-1*grid.lmax,grid.lmax],yrange=[-1*grid.lmax,grid.lmax],/nodata,title=title,$
                 ystyle=1,xstyle=1
   oplot,Earthx,Earthy
   polyfill,Earthx,Earthy2
@@ -147,8 +150,6 @@ pro dial_plot,$
   colorbar,ticknames=tn,divisions=nvformatleft-1,position=[.05,.85,.35,.87],title=cbtitle
 
 
-stop
-
 
 ;; --------------------------------------------
 ;; Plot counts
@@ -157,7 +158,7 @@ stop
 
   polar_contour,transpose(counts),grid_theta_center,grid_lshell_center,$
                 /cell_fill,nlevels=20,/isotropic,$
-                xrange=[-7,7],yrange=[-7,7],/nodata,title='Counts!CLshell vs MLT',$
+                xrange=[-1*grid.lmax,grid.lmax],yrange=[-1*grid.lmax,grid.lmax],/nodata,title='Counts!CLshell vs MLT',$
                 ystyle=1,xstyle=1
   oplot,Earthx,Earthy
   polyfill,Earthx,Earthy2
