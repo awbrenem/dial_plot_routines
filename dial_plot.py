@@ -2,6 +2,40 @@
 Produce dial plots (e.g. L/MLT). Two plots. Typically left plot is observable 
 and right is counts
 
+----------------------------
+#Example call for timeseries data
+----------------------------
+
+from scipy.interpolate import griddata
+
+#Define L/MLT bins
+L_bins = np.arange(2, 11)
+MLT_bins = np.arange(0, 24.1)
+
+data['MLTrb'] --> timeseries values of MLT
+data['Lrb'] --> timeseries values of L
+data['EMFb'] --> timeseries values of quantity 1
+data['SpecBMax'] --> timeseries values of quantity 2
+
+#Put the timeseries values on the MLT/L grid
+pointloc = np.transpose([data['MLTrb'],data['Lrb']])
+angular_grid, radial_grid = np.meshgrid(MLT_bins, L_bins)
+gridvals1 = griddata(pointloc, data['EMFb'], (angular_grid,radial_grid), method='nearest')
+gridvals2 = griddata(pointloc, data['SpecBMax_lb'], (angular_grid,radial_grid), method='nearest')
+
+
+cmap = 'viridis'
+mesh_kwargs1={'cmap':cmap,'vmin':0,'vmax':500}
+colorbar_kwargs1={'label':'median > 1 MeV flux\n#/cm2-sr', 'pad':0.1}
+mesh_kwargs2={'cmap':cmap,'vmin':np.min(gridvals2),'vmax':np.max(gridvals2),'log':1}
+colorbar_kwargs2={'label':'Number of samples', 'pad':0.1}
+dp.dial_plot(gridvals1, gridvals2, MLT_bins, L_bins,
+              mesh_kwargs1=mesh_kwargs1,
+              colorbar_kwargs1=colorbar_kwargs1,
+              mesh_kwargs2=mesh_kwargs2,
+              colorbar_kwargs2=colorbar_kwargs2)
+
+
 
 """
 
